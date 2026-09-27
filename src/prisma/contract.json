@@ -1,0 +1,263 @@
+{
+  "schemaVersion": "1",
+  "targetFamily": "sql",
+  "target": "postgres",
+  "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
+  "roots": {
+    "User": {
+      "model": "User",
+      "namespace": "public"
+    }
+  },
+  "domain": {
+    "namespaces": {
+      "public": {
+        "enum": {
+          "Provider": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "CREDENTIALS",
+                "value": "CREDENTIALS"
+              },
+              {
+                "name": "GOOGLE",
+                "value": "GOOGLE"
+              }
+            ]
+          }
+        },
+        "models": {
+          "User": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "email": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "password": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "provider": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Provider",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "email": {
+                  "column": "email"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "password": {
+                  "column": "password"
+                },
+                "provider": {
+                  "column": "provider"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "public",
+              "table": "User"
+            }
+          }
+        }
+      }
+    }
+  },
+  "storage": {
+    "namespaces": {
+      "public": {
+        "entries": {
+          "table": {
+            "User": {
+              "checks": [
+                {
+                  "expression": "\"provider\" IN ('CREDENTIALS', 'GOOGLE')",
+                  "name": "User_provider_check_4332f456",
+                  "prefix": "User_provider_check"
+                }
+              ],
+              "columns": {
+                "createdAt": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "email": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "password": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "provider": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "CREDENTIALS"
+                  },
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Provider",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "email"
+                  ]
+                }
+              ]
+            }
+          },
+          "valueSet": {
+            "Provider": {
+              "kind": "valueSet",
+              "values": [
+                "CREDENTIALS",
+                "GOOGLE"
+              ]
+            }
+          }
+        },
+        "id": "public",
+        "kind": "postgres-schema"
+      }
+    },
+    "storageHash": "742bca2ee9446a32d2d682606909e08a50a1ce9a08be699ab1b9874d70fd2a1c"
+  },
+  "execution": {
+    "executionHash": "eaf1b643dc78bdb71eac08265cdbb29bcc41c9cfce432fdad3320dfc260cb360",
+    "mutations": {
+      "defaults": [
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "User"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "updatedAt",
+            "namespace": "public",
+            "table": "User"
+          }
+        }
+      ]
+    }
+  },
+  "capabilities": {
+    "postgres": {
+      "distinctOn": true,
+      "jsonAgg": true,
+      "lateral": true,
+      "limit": true,
+      "orderBy": true,
+      "returning": true
+    },
+    "sql": {
+      "checkConstraint": true,
+      "defaultInInsert": true,
+      "enums": true,
+      "insertOnConflictSkip": true,
+      "insertOnConflictWithoutTarget": true,
+      "lateral": true,
+      "returning": true,
+      "scalarList": true
+    }
+  },
+  "extensions": {},
+  "meta": {},
+  "_generated": {
+    "warning": "⚠️  GENERATED FILE - DO NOT EDIT",
+    "message": "This file is automatically generated by \"prisma contract emit\".",
+    "regenerate": "To regenerate, run: prisma contract emit"
+  }
+}
