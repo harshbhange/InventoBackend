@@ -1,4 +1,10 @@
 {
+  "name": "invento_backend",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts"
+  },
   "dependencies": {
     "express": "^5.2.1"
   },
