@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { hashPassword } from "../../utils/hashpass.utils";
 import { registerZodSchema } from "../../types/zod";
-import { Prisma } from "../../generated/prisma/client";
 import { db } from "../../prisma/db";
+import generateToken from "../../utils/generated-token.utils";
 
 export default async function registerUser(req: Request, res: Response) {
   try {
@@ -31,14 +31,15 @@ export default async function registerUser(req: Request, res: Response) {
       },
     });
 
-    // 4. Don't return password hash
-    const { password: _, ...safeUser } = user;
-
-    // 5. User created
-    return res.status(201).json({
-      message: "User Registered",
-      user: safeUser,
-    });
+    if (user.id) {
+      const token = generateToken(user);
+      res.cookie("authToken", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 1,
+      });
+    }
   } catch (error: any) {
     console.error(error);
 
