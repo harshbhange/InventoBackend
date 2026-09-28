@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
-import { updateProfileZodSchema } from "../../types/zod";
+import { createProfileZodSchema } from "../../types/zod";
 import { db } from "../../prisma/db";
 
-export default async function updateProfile(req: Request, res: Response) {
+export default async function createProfile(req: Request, res: Response) {
   try {
     const { id } = req.user;
 
     // 1. Validate request body
-    const result = updateProfileZodSchema.safeParse(req.body);
+    const result = createProfileZodSchema.safeParse(req.body);
 
     if (!result.success) {
       return res.status(400).json({
@@ -16,30 +16,30 @@ export default async function updateProfile(req: Request, res: Response) {
       });
     }
 
-    // 2. Check if profile exists
+    // 2. Check if profile already exists
     const existingProfile = await db.profile.findUnique({
       where: {
         userId: id,
       },
     });
 
-    if (!existingProfile) {
-      return res.status(404).json({
-        message: "Profile does not exist. Please create your profile first.",
+    if (existingProfile) {
+      return res.status(409).json({
+        message: "Profile already exists. Please update your profile.",
       });
     }
 
-    // 3. Update only the fields provided by the user
-    const profile = await db.profile.update({
-      where: {
+    // 3. Create profile
+    const profile = await db.profile.create({
+      data: {
         userId: id,
+        ...result.data,
       },
-      data: result.data,
     });
 
-    // 4. Return updated profile
-    return res.status(200).json({
-      message: "Profile updated successfully",
+    // 4. Return created profile
+    return res.status(201).json({
+      message: "Profile created successfully",
       profile,
     });
   } catch (error) {

@@ -1,6 +1,8 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { db } from "../../prisma/db";
+import createProfile from "../../controllers/me/create-profile.controller";
+import updateProfile from "../../controllers/me/update-profile.controller";
 
 const meRoute = Router();
 
@@ -18,6 +20,7 @@ meRoute.get("/user", async (req: Request, res: Response) => {
         provider: true,
         createdAt: true,
         updatedAt: true,
+        profile: true,
       },
     });
     return res.status(201).json({ user });
@@ -28,5 +31,6 @@ meRoute.get("/user", async (req: Request, res: Response) => {
     });
   }
 });
-meRoute.
+meRoute.post("/profile/create", createProfile);
+meRoute.patch("/profile/update", updateProfile);
 export { meRoute };

@@ -35,7 +35,6 @@ export default async function authMiddleware(
     return next();
   } catch (error) {
     console.error(error);
-
     return res.status(401).json({
       message: "Invalid or expired authentication token",
     });
