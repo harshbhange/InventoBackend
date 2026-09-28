@@ -15,7 +15,7 @@ export default async function registerUser(req: Request, res: Response) {
         errors: result.error.format(),
       });
     }
-    console.log(result);
+
     const { email, password, provider } = result.data;
 
     // 2. Hash password
@@ -27,19 +27,27 @@ export default async function registerUser(req: Request, res: Response) {
         email,
         password: hashPass,
         provider,
-        createdAt: new Date(),
       },
     });
 
-    if (user.id) {
-      const token = generateToken(user);
-      res.cookie("authToken", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 1,
-      });
-    }
+    // 4. Generate authentication token
+    const token = generateToken(user);
+
+    // 5. Set HTTP-only cookie
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    // 6. Remove password before sending user data
+    const { password: _, ...safeUser } = user;
+
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: safeUser,
+    });
   } catch (error: any) {
     console.error(error);
 

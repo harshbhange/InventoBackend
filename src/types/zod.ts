@@ -5,4 +5,10 @@ const registerZodSchema = z.object({
   password: z.string(),
   provider: z.enum(["CREDENTIALS", "GOOGLE"]),
 });
-export { registerZodSchema };
+
+const loginZodSchema = z.object({
+  email: z.email(),
+  password: z.string(),
+  provider: z.enum(["CREDENTIALS", "GOOGLE"]),
+});
+export { registerZodSchema, loginZodSchema };
