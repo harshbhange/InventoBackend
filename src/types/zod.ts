@@ -83,6 +83,11 @@ export const acceptJoinRequestZodSchema = z.object({
 export const rejectJoinRequestZodSchema = z.object({
   requestId: z.string().uuid("Invalid request ID"),
 });
+
+export const updateMemberRoleZodSchema = z.object({
+  userId: z.string().uuid("Invalid user ID"),
+  role: z.enum(["ADMIN", "EMPLOYEE"]),
+});
 export const updateCompanyZodSchema = createCompanyZodSchema.partial();
 
 export const updateProfileZodSchema = createProfileZodSchema.partial();
