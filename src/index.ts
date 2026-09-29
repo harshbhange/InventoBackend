@@ -1,4 +1,4 @@
-import type { Response } from "express";
+import type { Response, Request } from "express";
 import express from "express";
 import dotenv from "dotenv";
 import apiRouter from "./route/index.route";
@@ -11,6 +11,13 @@ app.use("/", apiRouter);
 app.get("/health", (_, res: Response) => {
   return res.status(200).json({
     message: "Server Running",
+  });
+});
+app.use((req: Request, res: Response) => {
+  return res.status(404).json({
+    message: "Unidentified API Route",
+    method: req.method,
+    path: req.originalUrl,
   });
 });
 

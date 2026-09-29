@@ -52,4 +52,29 @@ export const createProfileZodSchema = z.object({
     .max(500, "Bio must not exceed 500 characters"),
 });
 
+export const createCompanyZodSchema = z.object({
+  name: z
+    .string("Name is required")
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must not exceed 50 characters"),
+  description: z
+    .string("Description is required")
+    .trim()
+    .min(5, "Description must be at least 5 characters")
+    .max(300, "Description must not exceed 300 characters")
+    .optional(),
+  tags: z
+    .array(
+      z
+        .string()
+        .trim()
+        .min(2, "tag must be at least 2 characters")
+        .max(50, "tag must not exceed 50 characters"),
+    )
+    .optional(),
+});
+
+export const updateCompanyZodSchema = createCompanyZodSchema.partial();
+
 export const updateProfileZodSchema = createProfileZodSchema.partial();
