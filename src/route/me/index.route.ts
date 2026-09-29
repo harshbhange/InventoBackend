@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { db } from "../../prisma/db";
 import createProfile from "../../controllers/me/create-profile.controller";
 import updateProfile from "../../controllers/me/update-profile.controller";
+import requestToJoinCompany from "../../controllers/company/request-join-company.controller";
 
 const meRoute = Router();
 
@@ -33,4 +34,5 @@ meRoute.get("/user", async (req: Request, res: Response) => {
 });
 meRoute.post("/profile/create", createProfile);
 meRoute.patch("/profile/update", updateProfile);
+meRoute.patch("/profile/request/join-comapny", requestToJoinCompany);
 export { meRoute };

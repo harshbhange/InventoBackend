@@ -75,6 +75,14 @@ export const createCompanyZodSchema = z.object({
     .optional(),
 });
 
+export const acceptJoinRequestZodSchema = z.object({
+  requestId: z.string().uuid("Invalid request ID"),
+  role: z.enum(["ADMIN", "EMPLOYEE"]),
+});
+
+export const rejectJoinRequestZodSchema = z.object({
+  requestId: z.string().uuid("Invalid request ID"),
+});
 export const updateCompanyZodSchema = createCompanyZodSchema.partial();
 
 export const updateProfileZodSchema = createProfileZodSchema.partial();
