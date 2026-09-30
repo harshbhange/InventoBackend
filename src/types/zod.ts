@@ -88,6 +88,47 @@ export const updateMemberRoleZodSchema = z.object({
   userId: z.string().uuid("Invalid user ID"),
   role: z.enum(["ADMIN", "EMPLOYEE"]),
 });
+
+export const createProductZodSchema = z.object({
+  name: z.string().trim().min(1, "Product name is required"),
+
+  sku: z.string().trim().min(1, "SKU is required"),
+
+  description: z.string().trim().optional(),
+
+  price: z.number().nonnegative("Price cannot be negative"),
+
+  costPrice: z.number().nonnegative("Cost price cannot be negative").optional(),
+
+  quantity: z
+    .number()
+    .int("Quantity must be an integer")
+    .nonnegative("Quantity cannot be negative")
+    .default(0),
+
+  unit: z.string().trim().min(1, "Unit is required").default("PCS"),
+});
+
+export const updateProductZodSchema = z.object({
+  name: z.string().trim().min(1, "Product name cannot be empty").optional(),
+
+  sku: z.string().trim().min(1, "SKU cannot be empty").optional(),
+
+  description: z.string().trim().optional(),
+
+  price: z.number().nonnegative("Price cannot be negative").optional(),
+
+  costPrice: z.number().nonnegative("Cost price cannot be negative").optional(),
+
+  quantity: z
+    .number()
+    .int("Quantity must be an integer")
+    .nonnegative("Quantity cannot be negative")
+    .optional(),
+
+  unit: z.string().trim().min(1, "Unit cannot be empty").optional(),
+});
+
 export const updateCompanyZodSchema = createCompanyZodSchema.partial();
 
 export const updateProfileZodSchema = createProfileZodSchema.partial();

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "postinstall": "prisma skills sync || exit 0",
-    "contract:emit": "prisma contract emit"
+    "contract:emit": "prisma contract emit",
+    "test:api": "bun run scripts/test-all-endpoints.ts"
   },
   "dependencies": {
     "@prisma/adapter-neon": "^7.10.0",

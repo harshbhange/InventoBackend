@@ -6,7 +6,7 @@ import removeCompanyMember from "../../controllers/company-members/remove-compan
 const memberRoute = Router();
 
 memberRoute.get("/all", getCompanyMembers);
-memberRoute.patch("/update/role", updateMemberRole); // under testing
-memberRoute.delete("/delete", removeCompanyMember);
+memberRoute.patch("/update/role", updateMemberRole);
+memberRoute.delete("/delete", removeCompanyMember); // under testing
 
 export { memberRoute };
