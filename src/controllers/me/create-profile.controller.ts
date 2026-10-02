@@ -5,9 +5,8 @@ import { db } from "../../prisma/db";
 export default async function createProfile(req: Request, res: Response) {
   try {
     const { id } = req.user;
-
     // 1. Validate request body
-    const result = createProfileZodSchema.safeParse(req.body);
+    const result = createProfileZodSchema.safeParse(req.body?.data);
 
     if (!result.success) {
       return res.status(400).json({
