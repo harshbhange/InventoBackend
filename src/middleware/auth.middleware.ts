@@ -27,6 +27,7 @@ export default async function authMiddleware(
     if (!verifiedUser) {
       return res.status(401).json({
         message: "User is not authenticated",
+        auth: false,
       });
     }
 

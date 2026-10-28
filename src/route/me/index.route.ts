@@ -22,6 +22,14 @@ meRoute.get("/user", async (req: Request, res: Response) => {
         provider: true,
         createdAt: true,
         updatedAt: true,
+        newUser: true,
+        companyMembers: {
+          select: {
+            id: true,
+            company: true,
+            role: true,
+          },
+        },
         profile: {
           select: {
             name: true,
@@ -29,7 +37,7 @@ meRoute.get("/user", async (req: Request, res: Response) => {
         },
       },
     });
-    return res.status(201).json({ user });
+    return res.status(201).json({ user, auth: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -37,6 +45,7 @@ meRoute.get("/user", async (req: Request, res: Response) => {
     });
   }
 });
+
 meRoute.post("/profile/create", createProfile);
 meRoute.patch("/profile/update", updateProfile);
 meRoute.get("/profile/get", getProfile);

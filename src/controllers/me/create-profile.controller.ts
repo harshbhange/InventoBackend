@@ -6,7 +6,7 @@ export default async function createProfile(req: Request, res: Response) {
   try {
     const { id } = req.user;
     // 1. Validate request body
-    const result = createProfileZodSchema.safeParse(req.body?.data);
+    const result = createProfileZodSchema.safeParse(req.body);
 
     if (!result.success) {
       return res.status(400).json({
@@ -36,6 +36,12 @@ export default async function createProfile(req: Request, res: Response) {
       },
     });
 
+    const updateUser = await db.user.update({
+      where: { id: profile.userId },
+      data: {
+        newUser: false,
+      },
+    });
     // 4. Return created profile
     return res.status(201).json({
       message: "Profile created successfully",
